@@ -5,7 +5,7 @@ This project is a template for extracting hierarchical documentation from a webs
 ## Project Structure
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Panolof/website-document-extractor.git
 
 
 ```bash
@@ -29,7 +29,7 @@ git clone <your-repo-url>
 First, clone the repository:
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Panolof/website-document-extractor.git
 cd website-doc-extractor
 ```
 
