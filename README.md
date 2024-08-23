@@ -72,8 +72,13 @@ python src/extractor.py <base_url> <output_folder>
 
 Replace ```<base_url>``` with the URL of the documentation you want to start crawling from and ```<output_folder>``` with the directory where the extracted text files should be saved.
 
+### 5. Logging Configuration
 
-### 5. Deactivating the Virtual Environment
+The logging configuration is managed using a YAML file (```logging_config.yaml```). The script logs detailed information, including requests, response status codes, and errors:
+* Logs are written to ```logs/extractor.log```.
+* The logging format is defined in the YAML file for both console output and file logging.
+
+### 6. Deactivating the Virtual Environment
 
 Once you’re done working on the project, you can deactivate the virtual environment:
 
