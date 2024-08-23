@@ -1,5 +1,13 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+
+# Ignore all output files
 output/
+
+# Ignore the virtual environment directory 
 venv/
+
+# Ignore all log files in the logs directory
+logs/*.log
