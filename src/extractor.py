@@ -1,7 +1,7 @@
 import os
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 import argparse
 import logging
 import logging.config
@@ -16,7 +16,22 @@ def setup_logging(default_path='logging_config.yaml', default_level=logging.INFO
     else:
         logging.basicConfig(level=default_level)
 
-def get_tree_structure(url, output_folder, visited=None):
+def is_valid_link(base_url, link):
+    # Parse the base URL and the link
+    base_url_parsed = urlparse(base_url)
+    link_parsed = urlparse(link)
+
+    # Ensure the link is within the base path and under the specified section
+    return (
+        link_parsed.netloc == base_url_parsed.netloc and
+        link_parsed.path.startswith(base_url_parsed.path)
+    )
+
+def save_link_to_index(link, index_file_path):
+    with open(index_file_path, 'a', encoding='utf-8') as index_file:
+        index_file.write(f"{link}\n")
+
+def get_tree_structure(url, output_folder, index_file_path, visited=None):
     if visited is None:
         visited = set()
 
@@ -55,13 +70,19 @@ def get_tree_structure(url, output_folder, visited=None):
 
         logger.info(f"Saved content to: {output_path}")
 
+        # Save the visited link to the index file
+        save_link_to_index(url, index_file_path)
+
         # Extract internal links for further exploration
         links = soup.find_all('a', href=True)
         internal_links = [urljoin(url, link['href']) for link in links if link['href'].startswith('/')]
 
+        # Filter the links to only those within the specified section
+        internal_links = [link for link in internal_links if is_valid_link(args.base_url, link)]
+
         # Recurse into each of the internal links
         for link in set(internal_links):
-            get_tree_structure(link, output_folder, visited)
+            get_tree_structure(link, output_folder, index_file_path, visited)
 
     except Exception as e:
         logger.error(f"An error occurred while processing {url}: {e}")
@@ -70,6 +91,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Extract documentation from a website to text files.")
     parser.add_argument('base_url', type=str, help="The base URL to start crawling from")
     parser.add_argument('output_folder', type=str, help="The folder to save extracted text files")
+    parser.add_argument('index_file', type=str, help="The file to save the index of visited links")
 
     args = parser.parse_args()
 
@@ -81,4 +103,4 @@ if __name__ == "__main__":
         os.makedirs(args.output_folder)
 
     # Start the extraction process
-    get_tree_structure(args.base_url, args.output_folder)
+    get_tree_structure(args.base_url, args.output_folder, args.index_file)
