@@ -11,6 +11,7 @@ git clone https://github.com/Panolof/website-document-extractor.git
 ```bash
 .
 ├── README.md
+├── LICENSE
 ├── output
 │   └── .gitkeep
 ├── requirements.txt
@@ -18,6 +19,10 @@ git clone https://github.com/Panolof/website-document-extractor.git
 ├── src
 │   ├── __init__.py
 │   └── extractor.py
+├── token_estimator.py
+├── logs
+│   └── extractor.log
+├── logging_config.yaml
 ├── .gitignore
 
 ```
@@ -67,10 +72,11 @@ pip install -r requirements.txt
 You can now run the script to extract the documentation:
 
 ```bash
-python src/extractor.py <base_url> <output_folder>
+python src/extractor.py <base_url> <output_folder> <index_file>
 ```
 
-Replace ```<base_url>``` with the URL of the documentation you want to start crawling from and ```<output_folder>``` with the directory where the extracted text files should be saved.
+Replace ```<base_url>``` with the URL of the documentation you want to start crawling from, ```<output_folder>``` with the directory where the extracted text files should be saved, and ```<index_file>``` with the path to the file where the list of visited links should be saved.
+
 
 ### 5. Logging Configuration
 
@@ -78,7 +84,22 @@ The logging configuration is managed using a YAML file (```logging_config.yaml``
 * Logs are written to ```logs/extractor.log```.
 * The logging format is defined in the YAML file for both console output and file logging.
 
-### 6. Deactivating the Virtual Environment
+### 6. Using the Token Estimator Utility
+
+Once you have concatenated the extracted files, you can estimate the token count:
+
+```bash
+python token_estimator.py output/how_to/concatenated.txt
+```
+
+By default, the token estimator uses the ```"gpt-3.5-turbo"``` model for estimation. You can specify a different model using the ```--model``` option:
+```bash
+python token_estimator.py output/how_to/concatenated.txt --model gpt-4
+```
+
+
+
+### 7. Deactivating the Virtual Environment
 
 Once you’re done working on the project, you can deactivate the virtual environment:
 
@@ -95,6 +116,9 @@ deactivate
 
 This is a basic template. Feel free to expand the project by adding more features like better link filtering, handling pagination, or improving the output file structure.
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
 
