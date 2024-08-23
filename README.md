@@ -22,12 +22,12 @@ git clone https://github.com/Panolof/website-document-extractor.git
 ├── token_estimator.py
 ├── content_condenser.py
 ├── logs
-│   ├── extractor.log
-│   └── content_condenser.log
+│   ├── .gitkeep                  # Ensures the logs directory is tracked even if empty
+│   ├── extractor.log             # Ignored by .gitignore
+│   └── content_condenser.log     # Ignored by .gitignore
 ├── logging_config_extractor.yaml
 ├── logging_config_condenser.yaml
 ├── .gitignore
-
 ```
 
 ## Setup Instructions
