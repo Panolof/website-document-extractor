@@ -20,9 +20,12 @@ git clone https://github.com/Panolof/website-document-extractor.git
 │   ├── __init__.py
 │   └── extractor.py
 ├── token_estimator.py
+├── content_condenser.py
 ├── logs
-│   └── extractor.log
-├── logging_config.yaml
+│   ├── extractor.log
+│   └── content_condenser.log
+├── logging_config_extractor.yaml
+├── logging_config_condenser.yaml
 ├── .gitignore
 
 ```
@@ -77,14 +80,24 @@ python src/extractor.py <base_url> <output_folder> <index_file>
 
 Replace ```<base_url>``` with the URL of the documentation you want to start crawling from, ```<output_folder>``` with the directory where the extracted text files should be saved, and ```<index_file>``` with the path to the file where the list of visited links should be saved.
 
+### 5. Running the Content Condenser Script
 
-### 5. Logging Configuration
+After extraction, you can condense the documentation content:
+```bash
+python content_condenser.py <file_path> --max_sentences 5 --model_name "all-MiniLM-L6-v2"
+```
+Replace ```<file_path>``` with the path to the concatenated text file. Adjust ```--max_sentences``` and ```--model_name``` as needed.
 
-The logging configuration is managed using a YAML file (```logging_config.yaml```). The script logs detailed information, including requests, response status codes, and errors:
-* Logs are written to ```logs/extractor.log```.
-* The logging format is defined in the YAML file for both console output and file logging.
+### 6. Logging Configuration
 
-### 6. Using the Token Estimator Utility
+The logging configuration is managed using separate YAML files for the extractor and condenser scripts:
+* For the extractor script: ```logging_config_extractor.yaml```
+    * Logs are written to ```logs/extractor.log```.
+* For the condenser script: ```logging_config_condenser.yaml```
+    * Logs are written to ```logs/content_condenser.log```.
+The logging format is defined in the YAML file for both console output and file logging.
+
+### 7. Using the Token Estimator Utility
 
 Once you have concatenated the extracted files, you can estimate the token count:
 
@@ -97,9 +110,7 @@ By default, the token estimator uses the ```"gpt-3.5-turbo"``` model for estimat
 python token_estimator.py output/how_to/concatenated.txt --model gpt-4
 ```
 
-
-
-### 7. Deactivating the Virtual Environment
+### 8. Deactivating the Virtual Environment
 
 Once you’re done working on the project, you can deactivate the virtual environment:
 
