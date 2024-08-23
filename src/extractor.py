@@ -8,13 +8,14 @@ import logging.config
 import yaml
 import time
 
-def setup_logging(default_path='logging_config.yaml', default_level=logging.INFO):
+def setup_logging(default_path='logging_config_extractor.yaml', default_level=logging.INFO):
     if os.path.exists(default_path):
         with open(default_path, 'r') as f:
             config = yaml.safe_load(f.read())
             logging.config.dictConfig(config)
     else:
         logging.basicConfig(level=default_level)
+
 
 def is_valid_link(base_url, link):
     # Parse the base URL and the link

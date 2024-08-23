@@ -1,0 +1,30 @@
+version: 1
+disable_existing_loggers: False
+
+formatters:
+  detailed:
+    format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: detailed
+    stream: ext://sys.stdout
+
+  file:
+    class: logging.FileHandler
+    level: INFO
+    formatter: detailed
+    filename: logs/content_condenser.log
+    mode: a
+
+loggers:
+  __main__:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: no
+
+root:
+  level: INFO
+  handlers: [console, file]
